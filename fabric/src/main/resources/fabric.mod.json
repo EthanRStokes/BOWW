@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "${mod_author}"
+  ],
+  "contact": {
+    "homepage": "https://frozenblock.net",
+    "sources": "https://github.com/FrozenBlock/FrozenLib-ML"
+  },
+  "license": "${mod_license}",
+  "icon": "assets/${mod_id}/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.frozenblock.ml_template.fabric.FrozenBlockMultiloaderTemplateFabric"
+    ],
+    "client": [
+      "net.frozenblock.ml_template.fabric.FrozenBlockMultiloaderTemplateFabricClient"
+    ],
+    "server": [
+      "net.frozenblock.ml_template.fabric.FrozenBlockMultiloaderTemplateFabric"
+    ],
+    "modmenu": [
+      "net.frozenblock.ml_template.fabric.modmenu.FrozenBlockMultiloaderTemplateModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "${mod_id}.mixins.json",
+    "${mod_id}.fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version_range_fabric}",
+    "java": ">=${java_version}"
+  },
+  "suggests": {
+    "cloth-config": "*"
+  }
+}

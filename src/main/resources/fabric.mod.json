@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "id": "boww",
+  "version": "${version}",
+
+  "name": "BOWW",
+  "description": "Makes various aspects of Minecraft configurable while fleshing out the game.",
+  "authors": [
+    "FrozenBlock"
+  ],
+  "contributors": [
+    "Treetrain1",
+    "Lunade",
+    "Merp"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/configurable-everything",
+    "sources": "https://github.com/FrozenBlock/Configurable-Everything",
+    "issues": "https://github.com/FrozenBlock/Configurable-Everything/issues"
+  },
+
+  "license": "GPL-3.0",
+  "icon": "assets/boww/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "net.frozenblock.boww.BOWW"
+      }
+    ]
+  },
+  "mixins": [
+    "boww.mixins.json"
+  ],
+  "accessWidener": "boww.accesswidener",
+
+  "depends": {
+    "frozenlib": ">=2.1.5-",
+    "fabric-language-kotlin": "${fabric_kotlin_version}",
+    "fabricloader": ">=0.16.9",
+    "fabric-api": ">=0.104.1",
+    "minecraft": "${minecraft_version}"
+  },
+  "suggests": {
+    "fabric_kotlin_extensions": ">=1.1.7"
+  },
+  "breaks": {
+    "configurabledatafixers": "*",
+    "configurablesplashtexts": "*",
+    "fabric_kotlin_extensions": "<1.1.7"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/EpkBWm844s"
+      },
+      "badges": [
+        "frozenblock"
+      ]
+    }
+  }
+}

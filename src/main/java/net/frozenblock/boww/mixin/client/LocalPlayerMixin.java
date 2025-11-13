@@ -39,7 +39,13 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements M
 	/// Stops sprinting when the player stops holding the sprint button
 	@ModifyReturnValue(method = "shouldStopRunSprinting", at = @At("RETURN"))
 	private boolean canStop(boolean original) {
-		return original || !this.input.keyPresses.sprint();
+		return original || !this.input.keyPresses.sprint() || this.bOWW$getMovement().getGliding();
+	}
+
+	/// Cant start sprinting mid air
+	@ModifyReturnValue(method = "canStartSprinting", at = @At("RETURN"))
+	private boolean canStartSprinting(boolean original) {
+		return original && (this.onGround() || this.isSwimming());
 	}
 
 	@Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Input;jump()Z", ordinal = 2))

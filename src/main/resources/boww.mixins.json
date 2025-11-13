@@ -4,6 +4,7 @@
   "package": "net.frozenblock.boww.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "PlayerMixin"
   ],
   "client": [
     "client.LocalPlayerMixin"

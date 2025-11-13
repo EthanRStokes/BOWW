@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.mojang.authlib.GameProfile;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.frozenblock.boww.client.BOWWClient;
 import net.frozenblock.boww.impl.MovementPlayer;
 import net.frozenblock.boww.movement.Movement;
 import net.frozenblock.boww.network.C2SGlidePacket;
@@ -53,9 +54,15 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements M
 		if (!movement.getHasGlider()) return;
 
 		if (!abilities.flying && !this.minecraft.gameMode.isAlwaysFlying() && !this.onGround() && !this.isSwimming()) {
-			if (!bl && this.input.keyPresses.jump() && !bl4 && !movement.getGliding()) {
+			if (BOWWClient.DISABLE_GLIDER.consumeClick()) {
+				movement.setGliding(false);
+				ClientPlayNetworking.send(new C2SGlidePacket(false));
+			} else if (!bl && this.input.keyPresses.jump() && !bl4 && !movement.getGliding()) {
 				movement.setGliding(true);
 				ClientPlayNetworking.send(new C2SGlidePacket(true));
+
+				//noinspection StatementWithEmptyBody
+				while (BOWWClient.DISABLE_GLIDER.consumeClick()) {}
 			}
 		} else {
 			if (movement.getGliding()) {

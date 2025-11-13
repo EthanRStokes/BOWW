@@ -29,6 +29,12 @@
         "adapter": "kotlin",
         "value": "net.frozenblock.boww.BOWW"
       }
+    ],
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "net.frozenblock.boww.client.BOWWClient"
+      }
     ]
   },
   "mixins": [

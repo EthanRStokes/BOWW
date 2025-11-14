@@ -1,7 +1,9 @@
 package net.frozenblock.boww.movement
 
 import com.mojang.serialization.Codec
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.frozenblock.boww.impl.MovementPlayer
+import net.frozenblock.boww.network.C2SGlidePacket
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.syncher.EntityDataAccessor
 import net.minecraft.network.syncher.SynchedEntityData
@@ -43,7 +45,10 @@ class Movement(val player: Player) {
             player.setDeltaMovement(movement.x, yMovement, movement.z)
 
             if (stamina.depleted()) {
-                gliding = false
+                if (player.level().isClientSide) {
+                    gliding = false
+                    ClientPlayNetworking.send(C2SGlidePacket(false))
+                }
             }
             else stamina.decrease(StaminaAmount.GLIDE)
         }

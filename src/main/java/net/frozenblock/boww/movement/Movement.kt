@@ -120,8 +120,8 @@ class Stamina {
 }
 
 object StaminaAmount {
-    const val SPRINT = 20.0
-    const val GLIDE = 5.0
+    const val SPRINT: Double = 1000.0/58
+    const val GLIDE: Double = 5.0
 }
 
 data class StaminaData(var stamina: Double, @JvmField var timeout: Short = 0)

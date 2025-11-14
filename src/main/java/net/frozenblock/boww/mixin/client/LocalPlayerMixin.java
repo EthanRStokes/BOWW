@@ -62,7 +62,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements M
 		Movement movement = this.bOWW$getMovement();
 		if (!movement.getHasGlider()) return;
 
-		if (!abilities.flying && !this.minecraft.gameMode.isAlwaysFlying() && !this.onGround() && !this.isSwimming()) {
+		if (!abilities.flying && !this.minecraft.gameMode.isAlwaysFlying() && !this.onGround() && !this.isSwimming() && !movement.getStamina().depleted()) {
 			if (BOWWClient.DISABLE_GLIDER.consumeClick()) {
 				movement.setGliding(false);
 				ClientPlayNetworking.send(new C2SGlidePacket(false));

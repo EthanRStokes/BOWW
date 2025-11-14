@@ -41,6 +41,11 @@ class Movement(val player: Player) {
             val movement = player.deltaMovement
             val yMovement = max(movement.y, -0.05)
             player.setDeltaMovement(movement.x, yMovement, movement.z)
+
+            if (stamina.depleted()) {
+                gliding = false
+            }
+            else stamina.decrease()
         }
         if (player.level().isClientSide) {
             syncData()

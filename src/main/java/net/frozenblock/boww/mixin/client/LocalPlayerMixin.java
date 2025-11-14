@@ -1,5 +1,6 @@
 package net.frozenblock.boww.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
@@ -8,6 +9,8 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.frozenblock.boww.client.BOWWClient;
 import net.frozenblock.boww.impl.MovementPlayer;
 import net.frozenblock.boww.movement.Movement;
+import net.frozenblock.boww.movement.Stamina;
+import net.frozenblock.boww.movement.StaminaData;
 import net.frozenblock.boww.network.C2SGlidePacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -39,13 +42,13 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements M
 	/// Stops sprinting when the player stops holding the sprint button
 	@ModifyReturnValue(method = "shouldStopRunSprinting", at = @At("RETURN"))
 	private boolean canStop(boolean original) {
-		return original || !this.input.keyPresses.sprint() || this.bOWW$getMovement().getGliding();
+		return original || !this.input.keyPresses.sprint() || this.bOWW$getMovement().getGliding() || this.bOWW$getMovement().getStamina().depleted();
 	}
 
 	/// Cant start sprinting mid air
 	@ModifyReturnValue(method = "canStartSprinting", at = @At("RETURN"))
 	private boolean canStartSprinting(boolean original) {
-		return original && (this.onGround() || this.isSwimming());
+		return original && (this.onGround() || this.isSwimming()) && !this.bOWW$getMovement().getStamina().depleted();
 	}
 
 	@Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Input;jump()Z", ordinal = 2))
@@ -76,5 +79,22 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements M
 				ClientPlayNetworking.send(new C2SGlidePacket(false));
 			}
 		}
+	}
+
+	@ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isSprinting()Z"))
+	private boolean isSprinting(boolean original) {
+		Movement movement = this.bOWW$getMovement();
+		Stamina stamina = movement.getStamina();
+		if (stamina.depleted()) {
+			StaminaData data = stamina.getData();
+			--data.timeout;
+			if (data.timeout <= 0) {
+				data.timeout = 0;
+				data.setStamina(1000.0);
+			}
+		}
+		if (original)
+			this.bOWW$getMovement().getStamina().decrease();
+		return original;
 	}
 }

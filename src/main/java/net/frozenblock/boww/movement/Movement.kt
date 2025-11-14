@@ -66,7 +66,7 @@ class Movement(val player: Player) {
     }
 
     fun syncData() {
-        (this.player as MovementPlayer).`BOWW$updateSynchedBOWWData`()
+        this.player.`BOWW$updateSynchedBOWWData`()
     }
 }
 
@@ -81,8 +81,18 @@ class Stamina {
         if (player.hasAttached(MovementPlayer.STAMINA)) {
             this.data = player.getAttached(MovementPlayer.STAMINA)!!
         } else {
-            this.data = StaminaData(1.0)
+            this.data = StaminaData(1000.0)
             player.setAttached(MovementPlayer.STAMINA, this.data)
+        }
+    }
+
+    fun decrease() {
+        this.data.stamina -= 20
+
+        if (this.depleted()) {
+            this.data.stamina = 0.0
+
+            this.data.timeout = 50
         }
     }
 
@@ -90,14 +100,16 @@ class Stamina {
 
     fun load(tag: CompoundTag) {
         this.data.stamina = tag.getDouble("stamina").getOrNull()!!
+        this.data.timeout = tag.getShortOr("timeout", 0)
     }
 
     fun save(tag: CompoundTag) {
         tag.putDouble("stamina", this.data.stamina)
+        tag.putString("timeout", this.data.timeout.toString())
     }
 }
 
-data class StaminaData(var stamina: Double)
+data class StaminaData(var stamina: Double, @JvmField var timeout: Short = 0)
 
 fun <T> SynchedEntityData.setWithoutLocalUpdate(key: EntityDataAccessor<T>, value: T, force: Boolean = false) {
     val dataItem = this.getItem(key)

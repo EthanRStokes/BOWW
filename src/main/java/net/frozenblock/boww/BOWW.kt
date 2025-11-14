@@ -21,4 +21,4 @@ class BOWW : ModInitializer {
     }
 }
 
-val Player.movement: Movement get() = (this as MovementPlayer).`bOWW$getMovement`()
+inline val Player.movement: Movement get() = this.`bOWW$getMovement`()

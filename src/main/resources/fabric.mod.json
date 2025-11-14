@@ -40,7 +40,7 @@
   "mixins": [
     "boww.mixins.json"
   ],
-  "accessWidener": "boww.accesswidener",
+  "accessWidener": "boww.classtweaker",
 
   "depends": {
     "frozenlib": ">=2.1.5-",

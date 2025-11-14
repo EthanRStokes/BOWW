@@ -45,7 +45,7 @@ class Movement(val player: Player) {
             if (stamina.depleted()) {
                 gliding = false
             }
-            else stamina.decrease()
+            else stamina.decrease(StaminaAmount.GLIDE)
         }
         if (player.level().isClientSide) {
             syncData()
@@ -91,8 +91,8 @@ class Stamina {
         }
     }
 
-    fun decrease() {
-        this.data.stamina -= 20
+    fun decrease(amount: Double) {
+        this.data.stamina -= amount
 
         if (this.depleted()) {
             this.data.stamina = 0.0
@@ -112,6 +112,11 @@ class Stamina {
         tag.putDouble("stamina", this.data.stamina)
         tag.putString("timeout", this.data.timeout.toString())
     }
+}
+
+object StaminaAmount {
+    const val SPRINT = 20.0
+    const val GLIDE = 5.0
 }
 
 data class StaminaData(var stamina: Double, @JvmField var timeout: Short = 0)

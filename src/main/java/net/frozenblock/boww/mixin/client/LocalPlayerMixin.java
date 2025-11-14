@@ -10,6 +10,7 @@ import net.frozenblock.boww.client.BOWWClient;
 import net.frozenblock.boww.impl.MovementPlayer;
 import net.frozenblock.boww.movement.Movement;
 import net.frozenblock.boww.movement.Stamina;
+import net.frozenblock.boww.movement.StaminaAmount;
 import net.frozenblock.boww.movement.StaminaData;
 import net.frozenblock.boww.network.C2SGlidePacket;
 import net.minecraft.client.Minecraft;
@@ -94,7 +95,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements M
 			}
 		}
 		if (original)
-			this.bOWW$getMovement().getStamina().decrease();
+			this.bOWW$getMovement().getStamina().decrease(StaminaAmount.SPRINT);
 		return original;
 	}
 }
